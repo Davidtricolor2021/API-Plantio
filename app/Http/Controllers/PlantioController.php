@@ -17,8 +17,8 @@ class PlantioController extends Controller
 
     public function index()
     {
-        $plantios = Plantio::paginate(15);
-        return PlantioResource::collection($plantios);
+        $plantios = Plantio::where('ativo', '=', true)->paginate(15);
+            return PlantioResource::collection($plantios);
     }
 
     //Cadastrar um novo plantio
@@ -52,7 +52,7 @@ class PlantioController extends Controller
 
     public function show($id)
     {
-        $plantio = Plantio::findOrFail($id);
+        $plantio = Plantio::where('ativo', '=', true)->findOrFail($id);
         return new PlantioResource($plantio);
     }
 
@@ -60,7 +60,7 @@ class PlantioController extends Controller
 
     public function update(Request $request, $id)
     {
-        $plantio = Plantio::findOrFail($request->id);
+        $plantio = Plantio::where('ativo', '=', true)->findOrFail($request->id);
         $plantio->mes = $request->input('mes');
         $plantio->ano = $request->input('ano');
         $plantio->valor_incremento = $request->input('valor_incremento');
@@ -95,9 +95,10 @@ class PlantioController extends Controller
 
     public function destroy($id)
     {
-        $plantio = Plantio::findOrFail($id);
-
-        if ($plantio->delete()) { 
+        $plantio = Plantio::where('ativo', '=', true)->findOrFail($id);
+           
+            $plantio->ativo = false; 
+            $plantio->save();
 
             $historico = new Historico();               
             $historico->plantio_id = $plantio->id;
@@ -112,5 +113,4 @@ class PlantioController extends Controller
                 
             ]);
         }
-    }
 }
