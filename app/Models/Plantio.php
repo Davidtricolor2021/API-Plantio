@@ -16,6 +16,7 @@ class Plantio extends Model
         'valor_compensacao',
         'valor_reparacao',
         'tca_firmado',
-        'tca_executado',        
+        'tca_executado',
+        'ativo'        
     ];
 }
